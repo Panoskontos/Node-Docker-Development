@@ -1,14 +1,24 @@
 var express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser")
+const compression = require("compression")
+
 
 // import models
 const Post = require('./models/Post')
 const User = require('./models/User')
 
 var app = express();
-app.use(bodyParser.json())
 
+
+// middleware
+app.use(compression(
+    {
+        level:6,
+        // threshold:0
+    }
+    ))
+app.use(bodyParser.json())
 
 
 
@@ -27,8 +37,9 @@ db.once("open", function () {
 
 
 // simple get
-app.get("/second", (req, res) => {
-    res.json("Hi second");
+app.get("/text", (req, res) => {
+    const text = "Hi panos how are you my dear friend?"
+    res.json(text.repeat(1000000));
    });
 
 
