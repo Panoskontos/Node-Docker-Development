@@ -65,6 +65,33 @@ app.get("/", async (req, res) => {
 
 
 
+
+// get one
+app.get('/:postid', async (req, res)=>{
+    try{
+        const post = await Post.findById(req.params.postid)
+        res.json(post)
+    }catch(err){
+        res.json({message:err})
+    }  
+})
+
+
+
+
+
+// delete one
+app.delete('/:postid', async (req, res)=>{
+    try{
+        const removed = await Post.remove({_id: req.params.postid})
+        res.json("Item was deleted")
+    }catch(err){
+        res.json({message:err})
+    }  
+})
+
+
+
 app.listen(3000, () => {
  console.log("Server running on port 3000");
 });
