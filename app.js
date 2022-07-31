@@ -2,9 +2,9 @@ var express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser")
 
-// import model
+// import models
 const Post = require('./models/Post')
-
+const User = require('./models/User')
 
 var app = express();
 app.use(bodyParser.json())
@@ -66,15 +66,16 @@ app.get("/", async (req, res) => {
 
 
 
-// get one
-app.get('/:postid', async (req, res)=>{
-    try{
-        const post = await Post.findById(req.params.postid)
-        res.json(post)
-    }catch(err){
-        res.json({message:err})
-    }  
-})
+// get one  
+//  commented because is problematic when creating more
+// app.get('/:postid', async (req, res)=>{
+//     try{
+//         const post = await Post.findById(req.params.postid)
+//         res.json(post)
+//     }catch(err){
+//         res.json({message:err})
+//     }  
+// })
 
 
 
@@ -105,6 +106,38 @@ app.put('/:postid', async (req, res)=>{
         res.json({message:err})
     }  
 })
+
+
+// USERS
+app.post('/users', async (req, res)=>{
+    const newUser = new User({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+     })
+     newUser.save()
+     .then(data=>{
+         res.json(data)
+     })
+     .catch(err=>{
+         res.json({ message:err})
+     })
+});
+
+
+// get all
+app.get('/users', async (req, res) => {
+    try{
+        const allusers = await User.find()
+        res.json(allusers)
+    } catch(err){
+        res.json({ message:err })
+    }
+
+});
+
+
+
 
 
 
