@@ -92,6 +92,22 @@ app.delete('/:postid', async (req, res)=>{
 
 
 
+
+// updating one
+app.put('/:postid', async (req, res)=>{
+    try{
+        const updated = await Post.updateOne(
+            {_id:req.params.postid},
+             {$set:{title:req.body.title, description:req.body.description}}
+             )
+        res.json(updated)
+    }catch(err){
+        res.json({message:err})
+    }  
+})
+
+
+
 app.listen(3000, () => {
  console.log("Server running on port 3000");
 });
